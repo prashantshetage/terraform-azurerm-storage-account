@@ -4,17 +4,17 @@
 locals {
   account_tier             = (var.account_kind == "FileStorage" ? "Premium" : split("_", var.skuname)[0])
   account_replication_type = (local.account_tier == "Premium" ? "LRS" : split("_", var.skuname)[1])
-  resource_group_name      = element(coalescelist(data.azurerm_resource_group.rgrp.*.name, azurerm_resource_group.rg.*.name, [""]), 0)
-  location                 = element(coalescelist(data.azurerm_resource_group.rgrp.*.location, azurerm_resource_group.rg.*.location, [""]), 0)
+  resource_group_name      = var.create_resource_group ? azurerm_resource_group.rg[0].name : var.resource_group_name
+  location                 = var.location
 }
 
 #---------------------------------------------------------
 # Resource Group Creation or selection - Default is "false"
 #----------------------------------------------------------
-data "azurerm_resource_group" "rgrp" {
+/* data "azurerm_resource_group" "rgrp" {
   count = var.create_resource_group == false ? 1 : 0
   name  = var.resource_group_name
-}
+} */
 
 resource "azurerm_resource_group" "rg" {
   count    = var.create_resource_group ? 1 : 0
@@ -56,9 +56,9 @@ resource "azurerm_storage_account" "storeacc" {
     container_delete_retention_policy {
       days = var.container_soft_delete_retention_days
     }
-    versioning_enabled = var.enable_versioning
+    versioning_enabled       = var.enable_versioning
     last_access_time_enabled = var.last_access_time_enabled
-    change_feed_enabled = var.change_feed_enabled
+    change_feed_enabled      = var.change_feed_enabled
   }
 
   dynamic "network_rules" {
