@@ -5,17 +5,15 @@ variable "create_resource_group" {
 
 variable "resource_group_name" {
   description = "A container that holds related resources for an Azure solution"
-  default     = "rg-demo-westeurope-01"
+  default     = null
 }
 
 variable "location" {
   description = "The location/region to keep all your network resources. To get the list of all locations with table format from azure cli, run 'az account list-locations -o table'"
-  default     = "westeurope"
 }
 
 variable "storage_account_name" {
   description = "The name of the azure storage account"
-  default     = ""
 }
 
 variable "account_kind" {
@@ -112,4 +110,57 @@ variable "tags" {
   description = "A map of tags to add to all resources"
   type        = map(string)
   default     = {}
+}
+
+# Networking
+variable "default_action" {
+  description = "(Optional) Specifies the default action of allow or deny when no other rules match"
+  type        = string
+  default     = "Deny"
+}
+
+variable "bypass" {
+  description = "(Optional) Specifies whether traffic is bypassed for Logging/Metrics/AzureServices"
+  type        = list(string)
+  default     = ["Logging", "Metrics", "AzureServices"]
+}
+
+variable "ip_rules" {
+  description = "(Required) List of public IP or IP ranges in CIDR Format. Only IPV4 addresses are allowed"
+  type        = list(string)
+}
+
+variable "virtual_network_subnet_ids" {
+  description = "(Required) A list of virtual network subnet ids to to secure the storage account"
+  type        = list(string)
+}
+
+variable "private_link_subnet" {
+  description = "Private link subnet IDs"
+  type        = list(string)
+  default     = []
+}
+
+variable "private_dns_zone_name_blob" {
+  description = "DNS Zone name for Blob Private Endpoint"
+  type        = string
+  default     = ""
+}
+
+variable "private_dns_zone_name_file" {
+  description = "DNS Zone name for File Private Endpoint"
+  type        = string
+  default     = ""
+}
+
+variable "private_dns_zone_ids_blob" {
+  description = "List of private DNS zones for Blob"
+  type        = list(string)
+  default     = []
+}
+
+variable "private_dns_zone_ids_file" {
+  description = "List of private DNS zones for File"
+  type        = list(string)
+  default     = []
 }
