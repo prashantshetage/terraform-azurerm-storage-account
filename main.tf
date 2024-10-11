@@ -11,7 +11,7 @@ resource "azurerm_storage_account" "storeacc" {
   account_kind              = var.account_kind
   account_tier              = local.account_tier
   account_replication_type  = local.account_replication_type
-  enable_https_traffic_only = true
+  https_traffic_only_enabled = true
   min_tls_version           = var.min_tls_version
   #allow_blob_public_access  = var.enable_advanced_threat_protection == true ? true : false azurerm 3.x
   tags = var.tags
