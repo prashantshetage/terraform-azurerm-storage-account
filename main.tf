@@ -5,14 +5,14 @@ resource "random_string" "unique" {
 }
 
 resource "azurerm_storage_account" "storeacc" {
-  name                      = substr(format("sta%s%s", lower(replace(var.storage_account_name, "/[[:^alnum:]]/", "")), random_string.unique.result), 0, 24)
-  resource_group_name       = var.resource_group_name
-  location                  = var.location
-  account_kind              = var.account_kind
-  account_tier              = local.account_tier
-  account_replication_type  = local.account_replication_type
+  name                       = substr(format("sta%s%s", lower(replace(var.storage_account_name, "/[[:^alnum:]]/", "")), random_string.unique.result), 0, 24)
+  resource_group_name        = var.resource_group_name
+  location                   = var.location
+  account_kind               = var.account_kind
+  account_tier               = local.account_tier
+  account_replication_type   = local.account_replication_type
   https_traffic_only_enabled = true
-  min_tls_version           = var.min_tls_version
+  min_tls_version            = var.min_tls_version
   #allow_blob_public_access  = var.enable_advanced_threat_protection == true ? true : false azurerm 3.x
   tags = var.tags
 
